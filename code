@@ -1,0 +1,134 @@
+#include <Wire.h>
+#include <LCD.h>
+#include <LiquidCrystal_I2C.h> 
+
+LiquidCrystal_I2C lcd (0x27, 2, 1, 0, 4, 5, 6, 7); // DIR, E, RW, RS, D4, D5, D6, D7
+unsigned char seg = 50, min = 59, hor = 12;
+
+int amarillo = 7;
+int rojo = 6;
+int minutos = 4;
+int segundos = 3;
+int horas = 5;
+int confirm = 2;
+int papas = 0;
+int papitas = 0;
+int papotas = 0;
+int sopa = true;
+int oxxo = 0;
+
+
+void setup() {
+ pinMode(amarillo,OUTPUT);
+ pinMode(rojo,OUTPUT);
+ pinMode(confirm,INPUT);
+ pinMode(segundos,INPUT);
+ pinMode(minutos,INPUT);
+ pinMode(horas,INPUT);
+ lcd.setBacklightPin(3,POSITIVE);    // puerto P3 de PCF8574 como positivo
+ lcd.setBacklight(HIGH);        // habilita iluminacion posterior de LCD
+ lcd.begin(16, 2);            // 16 columnas por 2 lineas para LCD 1602A
+ lcd.clear(); 
+ Serial.begin(9600);
+
+}
+
+void loop() {
+ Serial.print("horas: ");
+ Serial.println(hor);
+ Serial.print("minutos: ");
+ Serial.println(min);
+ Serial.print("segundos: ");
+ Serial.println(seg);
+ lcd.setCursor(0,0);
+ if(hor < 10){
+ lcd.print("0");
+ }
+ lcd.print(hor);
+ lcd.setCursor(2,0);
+ lcd.print(":");
+ lcd.setCursor(3,0);
+ if(min < 10){
+ lcd.print("0");
+ }
+ lcd.print(min);
+ lcd.setCursor(5,0);
+ lcd.print(":");
+ lcd.setCursor(6,0);   
+ if(seg < 10){
+ lcd.print("0");
+ }
+ lcd.print(seg);
+
+ papotas = digitalRead(horas);
+ papitas = digitalRead(segundos);
+ papas = digitalRead(minutos);
+  
+  if(papas == LOW){
+  min++;
+  delay(500);
+  }
+  if(papas == HIGH){
+  
+  }
+  
+  if(papitas == LOW){
+  seg++;
+  delay(500);
+  }
+  if(papitas == HIGH){
+  
+  }
+
+  if(papotas == LOW){
+  hor++;
+  delay(500);
+  }
+  if(papotas == HIGH){
+  
+  }
+
+
+ {
+ Serial.print("horas: ");
+ Serial.println(hor);
+ Serial.print("minutos: ");
+ Serial.println(min);
+ Serial.print("segundos: ");
+ Serial.println(seg);
+ delay(1000);
+ }
+
+ seg++;
+
+ if(seg > 59){
+ seg=0;
+ min++;
+ if(sopa = true){
+ digitalWrite(amarillo,HIGH);
+ delay(300);
+ digitalWrite(amarillo,LOW);
+ sopa == false;
+ }
+ 
+ }
+ if (min > 59){
+ min=0;
+ hor++;
+ seg+2;
+ if(sopa = true){
+ digitalWrite(rojo,HIGH);
+ delay(1000);
+ digitalWrite(rojo,LOW);
+ sopa == false;
+ }
+ }
+ 
+ if (hor > 12){
+ hor = 0;
+ }
+
+ 
+
+
+}
